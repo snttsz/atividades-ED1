@@ -1,6 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* 
+
+Escreva uma função, em C, que receba uma lista simplesmente encadeada, e
+retorne uma lista ordenada (crescente) sem alocar espaços para novos
+elementos da lista.
+
+*/
+
+
 typedef struct Node
 {
     
@@ -101,62 +110,39 @@ Node *encontrar_ultimo_valor(Node *inicio)
 
 void ordenarLista(Node **inicio)
 {
+    if (*inicio == NULL || (*inicio)->proximo == NULL)
+    {
+        return;
+    }
+
     Node * atual = *inicio;
     Node * inicioOrdenada = NULL;
 
-    while(atual != NULL)
+    while (atual != NULL)
     {
-        if (inicioOrdenada == NULL)
+        Node * proximo = atual->proximo;
+
+        if (inicioOrdenada == NULL || atual->valor <= inicioOrdenada->valor)
         {
+            atual->proximo = inicioOrdenada;
             inicioOrdenada = atual;
         }
         else
         {
-            Node * atualOrdenada = NULL;
+            Node * atualOrdenada = inicioOrdenada;
 
-            while()
+            while (atualOrdenada->proximo != NULL && atualOrdenada->proximo->valor < atual->valor)
+            {
+                atualOrdenada = atualOrdenada->proximo;
+            }
+
+            atual->proximo = atualOrdenada->proximo;
+            atualOrdenada->proximo = atual;
         }
+
+
+        atual = proximo;
     }
 
-
-
-    // Node * atual = *inicio;
-    // Node * inicioOrdenada = NULL;
-
-    // while (atual != NULL)
-    // {
-    //     Node * proximo = atual->proximo;
-
-    //     /* 
-    //         Se a lista ordenada estiver vazia ou o valor atual for menor ou igual ao
-    //         primeiro valor da lista
-    //     */
-    //     if (inicioOrdenada == NULL || atual->valor <= inicioOrdenada->valor)
-    //     {
-    //         /* 
-    //             Insere o valor atual no início da lista ordenada
-    //         */
-    //         atual->proximo = inicioOrdenada;
-    //         inicioOrdenada = atual;
-    //     }
-    //     /* 
-    //         Se o valor atual for maior do que o primeiro valor na lista ordenada
-    //     */
-    //     else
-    //     {
-    //         Node * ordenadoAtual = inicioOrdenada;
-
-    //         while (ordenadoAtual->proximo != NULL && atual->valor > ordenadoAtual->proximo->valor)
-    //         {
-    //             ordenadoAtual = ordenadoAtual->proximo;
-    //         }
-
-    //         atual->proximo = ordenadoAtual->proximo;
-    //         ordenadoAtual->proximo = atual;
-    //     }
-
-    //     atual = proximo;
-    // }
-
-    // *inicio = inicioOrdenada;
+    *inicio = inicioOrdenada;
 }
